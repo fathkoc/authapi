@@ -1,37 +1,61 @@
 <?php
 
-// UserController.php
-
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserRequest;
-use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Requests\AuthRequest;
+use App\Models\Users;
 
-class UserController extends Controller
+class AuthController extends Controller
 {
-    public function insert(UserRequest $request)
-    {
-        // Verilen UserModel'ı için geçerli validasyonu geçtiği varsayılan ekleme işlemi
+
+    public function insert(Request $request)
+    {  
+        $name = $request->input('name');
+        $email = $request->input('email');
+        $password = $request->input('password');
+
+        $users = new Users();
+        $users->name = $name;
+        $users->email = $email;
+        $users->password = bcrypt($password);
+        $users->save();
+        
+        return response()->json(['success' => true, 'message' => 'Kullanıcı başarıyla eklendi']);
     }
 
     public function list()
     {
-        // Kullanıcı listeleme işlemi
+        $users = Users::all(); 
+
+        return response()->json(['success' => true, 'data' => $users]);
     }
 
-    public function update(User $user, UserRequest $request)
+    public function update(User $user, Request $request)
     {
-        // Belirli bir kullanıcıyı güncelleme işlemi
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->password = $request->input('passwor');
+        $user->save(); 
+
+        return response()->json(['success' => true, 'message' => 'Kullanıcı başarıyla güncellendi']);
     }
 
     public function delete(User $user)
     {
-        // Belirli bir kullanıcıyı silme işlemi
+        try {
+            $userId = $user->id; 
+    
+            $user->delete();
+    
+            return response()->json(['success' => true, 'message' => 'Kullanıcı başarıyla silindi']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Kullanıcı silme işleminde hata oluştu'], 500);
+        }
     }
 
-    public function destroy(User $user)
+    public function destroy(Request $user)
     {
-        // Belirli bir kullanıcıyı kalıcı olarak silme işlemi
+        //bilmem
     }
 }

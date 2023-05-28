@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Middleware\AuthorizationMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +17,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+/*
+Route::prefix('user')->group(function () {
+    Route::post('/insert', [AuthController::class, 'insert'])->middleware(AuthorizationMiddleware::class);
+});
+*/
+
+Route::middleware([AuthorizationMiddleware::class])->group(function() {
+    Route::post('insert', [AuthController::class, 'insert']);
+    Route::get('list', [AuthController::class, 'list']);
+    Route::delete('delete/{id}', [AuthController::class, 'delete']);
+
 });
