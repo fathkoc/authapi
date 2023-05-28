@@ -27,6 +27,7 @@ Route::prefix('user')->group(function () {
 Route::middleware([AuthorizationMiddleware::class])->group(function() {
     Route::post('insert', [AuthController::class, 'insert']);
     Route::get('list', [AuthController::class, 'list']);
-    Route::delete('delete/{id}', [AuthController::class, 'delete']);
+    Route::delete('delete/{users}', [AuthController::class, 'delete']);
+    Route::post('update/{users}', [AuthController::class, 'update']);
 
 });
