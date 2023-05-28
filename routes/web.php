@@ -18,11 +18,7 @@ use App\Http\Middleware\AuthorizationMiddleware;
 Route::get('/', function () {
     return view('welcome');
 });
-/*
-Route::prefix('user')->group(function () {
-    Route::post('/insert', [AuthController::class, 'insert'])->middleware(AuthorizationMiddleware::class);
-});
-*/
+
 
 Route::middleware([AuthorizationMiddleware::class])->group(function() {
     Route::post('insert', [AuthController::class, 'insert']);

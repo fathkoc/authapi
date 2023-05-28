@@ -62,6 +62,6 @@ class AuthController extends Controller
 
     public function destroy(Request $user)
     {
-        //bilmem
+        //anlamadım
     }
 }
